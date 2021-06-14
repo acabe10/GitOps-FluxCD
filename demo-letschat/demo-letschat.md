@@ -1,26 +1,33 @@
----------- Creamos carpeta para demo ----------
+### Creamos carpeta para demo
 
+~~~
 mkdir -p ./clusters/demo/ejemplo2
+~~~
 
----------- Creamos namespace ejemplo2 ----------
+### Creamos namespace ejemplo2
 
+~~~
 cat <<EOF > ./clusters/demo/ejemplo2/namespace.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ejemplo2
 EOF
+~~~
 
----------- Subimos cambios a github ----------
+### Subimos cambios a github
 
+~~~
 {
   git add .
   git commit -m 'Añado namespace ejemplo1'
   git push origin main
 }
+~~~
 
----------- Creamos componentes necesarios ----------
+### Creamos componentes necesarios
 
+~~~
 cat <<EOF > ./clusters/demo/ejemplo2/ingress.yaml
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -37,7 +44,8 @@ spec:
           serviceName: letschat
           servicePort: 8080
 EOF
-
+~~~
+~~~
 cat <<EOF > ./clusters/demo/ejemplo2/letschat-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -63,7 +71,8 @@ spec:
           - name: http-server
             containerPort: 8080
 EOF
-
+~~~
+~~~
 cat <<EOF > ./clusters/demo/ejemplo2/letschat-srv.yaml
 apiVersion: v1
 kind: Service
@@ -79,7 +88,8 @@ spec:
   selector:
     name: letschat
 EOF
-
+~~~
+~~~
 cat <<EOF > ./clusters/demo/ejemplo2/mongo-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -105,7 +115,8 @@ spec:
           - name: mongo
             containerPort: 27017
 EOF
-
+~~~
+~~~
 cat <<EOF > ./clusters/demo/ejemplo2/mongo-srv.yaml
 apiVersion: v1
 kind: Service
@@ -120,28 +131,38 @@ spec:
   selector:
     name: mongo
 EOF
+~~~
 
----------- Comprobamos creacción ----------
+### Comprobamos creacción
 
+~~~
 tree -L 4
+~~~
 
---------- Vemos componentes clúster en tiempo real ----------
+### Vemos componentes clúster en tiempo real
 
+~~~
 watch -n1 kubectl get all --namespace=ejemplo2
+~~~
 
----------- Subimos a git ----------
+### Subimos a git
 
+~~~
 {
   git add .
   git commit -m 'Subimos ejemplo2'
   git push origin main
 }
+~~~
 
----------- Forzamos reconciliación ----------
+### Forzamos reconciliación
 
+~~~
 flux reconcile kustomization flux-system --with-source
+~~~
 
----------- Editamos /etc/hosts ----------
+### Editamos /etc/hosts
 
+~~~
 sudo echo "localhost www.letschat.com" >> /etc/hosts
-
+~~~
