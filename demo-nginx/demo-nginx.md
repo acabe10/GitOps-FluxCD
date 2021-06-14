@@ -1,22 +1,31 @@
----------- Instalación de Flux ----------
+### Instalación de Fluxcd
 
+~~~
 sudo curl -sL https://toolkit.fluxcd.io/install.sh | sudo bash
+~~~
 
----------- Ver versión ----------
+### Para ver su versión
 
+~~~
 flux --version
+~~~
 
----------- Ver si cumple requisitos ----------
+### Ver si cumple requisitos el cúster
 
+~~~
 flux check --pre
+~~~
 
----------- Añadimos token de Github y usuario ----------
+### Añadimos token de Github y usuario
 
-export GITHUB_TOKEN=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
+~~~
+export GITHUB_TOKEN=**************************
 export GITHUB_USER=acabe10
+~~~
 
----------- Creamos repositorio ----------
+### Creamos repositorio
 
+~~~
 flux bootstrap github \
   --owner=$GITHUB_USER \
   --repository=flux-demo \
@@ -25,8 +34,9 @@ flux bootstrap github \
   --personal \
   --private=false \
   --interval=1m
+~~~
 
----------- Obtenemos namespaces y pods de flux-system ----------
+### Obtenemos namespaces y pods de flux-system
 
 {
   kubectl get namespaces
