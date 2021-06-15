@@ -9,6 +9,7 @@ flux bootstrap github \
   --personal \
   --private=false \
   --interval=1m \
+  --read-write-key \
   --components-extra=image-reflector-controller,image-automation-controller
 ~~~
 
