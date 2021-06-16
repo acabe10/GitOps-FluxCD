@@ -135,7 +135,7 @@ metadata:
     service: web
 spec:
   containers:
-    - image:  acabe10/web-prueba:v0.0.1  # {"web-prueba": "flux-system:web-prueba"}
+    - image:  acabe10/web-prueba:v0.0.1  # {"\$imagepolicy": "flux-system:web-prueba"}
       name:  nginx
 EOF
 ~~~
@@ -148,8 +148,27 @@ flux create image update web-prueba \
   --git-repo-ref=flux-system \
   --checkout-branch=main \
   --push-branch=main \
-  --author-name=acabe10 \
-  --author-email=alejandrocabezab@gmail.com \
+  --author-name=fluxbot \
+  --author-email=fluxbot@web-prueba.com \
+  --commit-template="{{ range .Updated.Images -}}
+[demo] Automated image update **{{ \$.AutomationObject }}** to **{{ .Identifier }}**
+{{ end -}}
+Automation name: {{ .AutomationObject }}
+
+Files:
+{{ range \$filename, \$_ := .Updated.Files -}}
+- {{ \$filename }}
+{{ end -}}
+
+Objects:
+{{ range \$resource, \$_ := .Updated.Objects -}}
+- {{ \$resource.Kind }} {{ \$resource.Name }}
+{{ end -}}
+
+Images:
+{{ range .Updated.Images -}}
+- {{.}}
+{{ end -}}" \
   --export > clusters/demo/automation/web-prueba-automation.yaml
 ~~~
 
